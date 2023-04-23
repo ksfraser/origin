@@ -1,6 +1,6 @@
 {
-  "name": "ksfraser/eventloop",
-  "description": "A set of event loop classes.",
+  "name": "ksfraser/origin",
+  "description": "A set of base classes for my framework.",
   "type": "library",
   "authors": [
     {
