@@ -10,7 +10,6 @@
   ],
   "minimum-stability": "dev",
   "require": {
-      "ksfraser/kfLog": "*"
   },
   "autoload": {
     "psr-4": {

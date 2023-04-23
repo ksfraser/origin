@@ -3,6 +3,10 @@
 
 //!< WARNING this class has some FrontAccounting specific code
 
+/****************************************************
+* 20230423 working on making into composer package
+*****************************************************/
+
 require_once( 'defines.inc.php' );
 //include_once( 'Log.php' );	//PEAR Logging - included in defines.inc
 
