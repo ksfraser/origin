@@ -12,11 +12,6 @@
   "minimum-stability": "dev",
   "require": {
   },
-  "autoload": {
-    "psr-4": {
-      "ksfraser\\origin\\": "src/"
-    }
-  },
   "require-dev": {
       "origin/origin": "^9.5"
   },
@@ -73,13 +68,15 @@
 //    "bin": [
 //        "origin"
 //    ],
-    "autoload": {
-        "classmap": [
-            "src/"
-//        ],
+  "autoload": {
+    "psr-4": {
+      "ksfraser\\origin\\": "src/"
+    },
+    "classmap": [
+        "src/"
 //        "files": [
 //            "src/Framework/Assert/Functions.php"
-        ]
-    }
+    ]
+  }
 }
 

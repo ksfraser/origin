@@ -1,5 +1,7 @@
 <?php
 
+namespace ksfraser;
+
 
 //!< WARNING this class has some FrontAccounting specific code
 
