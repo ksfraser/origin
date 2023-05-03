@@ -1,82 +1,48 @@
 {
   "name": "ksfraser/origin",
   "description": "A set of base classes for my framework.",
+  "homepage": "https://github.com/ksfraser/origin",
   "type": "library",
   "authors": [
     {
       "name": "Kevin Fraser",
       "email": "kevin@ksfraser.ca",
-      "role": "lead"
+      "role": "lead",
+      "homepage": "https://ksfraser.ca"
     }
   ],
   "minimum-stability": "dev",
   "require": {
   },
-  "require-dev": {
-      "origin/origin": "^9.5"
-  },
   "keywords": [
       "ksfraser"
   ],
-  "homepage": "https://ksfraser.ca/",
-//    "license": "BSD-3-Clause",
   "support": {
       "issues": "https://github.com/ksfraser/origin/issues",
       "security": "https://github.com/ksfraser/origin/security/policy"
   },
-//    "prefer-stable": true,
-//    "require": {
-//        "php": ">=7.3",
-//        "ext-dom": "*",
-//        "ext-json": "*",
-//        "ext-libxml": "*",
-//        "ext-mbstring": "*",
-//        "ext-xml": "*",
-//        "ext-xmlwriter": "*",
-//        "doctrine/instantiator": "^1.3.1 || ^2",
-//        "myclabs/deep-copy": "^1.10.1",
-//        "phar-io/manifest": "^2.0.3",
-//        "phar-io/version": "^3.0.2",
-//        "origin/php-code-coverage": "^9.2.13",
-//        "origin/php-file-iterator": "^3.0.5",
-//        "origin/php-invoker": "^3.1.1",
-//        "origin/php-text-template": "^2.0.3",
-//        "origin/php-timer": "^5.0.2",
-//        "sebastian/cli-parser": "^1.0.1",
-//        "sebastian/code-unit": "^1.0.6",
-//        "sebastian/comparator": "^4.0.8",
-//        "sebastian/diff": "^4.0.3",
-//        "sebastian/environment": "^5.1.3",
-//        "sebastian/exporter": "^4.0.5",
-//        "sebastian/global-state": "^5.0.1",
-//        "sebastian/object-enumerator": "^4.0.3",
-//        "sebastian/resource-operations": "^3.0.3",
-//        "sebastian/type": "^3.2",
-//        "sebastian/version": "^3.0.2"
-//    },
-//    "config": {
-//        "platform": {
-//            "php": "7.3.0"
-//        },
-//        "optimize-autoloader": true,
-//        "sort-packages": true
-//    },
-//    "suggest": {
-//        "ext-soap": "To be able to generate mocks based on WSDL files",
-//        "ext-xdebug": "PHP extension that provides line coverage as well as branch and path coverage"
-//    },
-//    "bin": [
-//        "origin"
-//    ],
   "autoload": {
     "psr-4": {
       "ksfraser\\origin\\": "src/"
     },
     "classmap": [
         "src/"
-//        "files": [
-//            "src/Framework/Assert/Functions.php"
     ]
   }
+  "require-dev": {
+        "phpstan/phpstan": "^0.12.91",
+        "phpunit/phpunit": "^8.5.14"
+  },
+    "autoload": {
+        "psr-4": {"ksfraser\\origin\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"ksfraser\\origin\\": "tests/"}
+    },
+    "scripts": {
+        "test": "@php vendor/bin/phpunit",
+        "phpstan": "@php vendor/bin/phpstan analyse"
+    }
+
 }
 

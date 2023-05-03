@@ -9,7 +9,7 @@ namespace ksfraser;
 * 20230423 working on making into composer package
 *****************************************************/
 
-require_once( 'defines.inc.php' );
+require_once( 'origin.inc.php' );
 //include_once( 'Log.php' );	//PEAR Logging - included in defines.inc
 
 /*
