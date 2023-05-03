@@ -28,7 +28,7 @@
     "classmap": [
         "src/"
     ]
-  }
+  },
   "require-dev": {
         "phpstan/phpstan": "^0.12.91",
         "phpunit/phpunit": "^8.5.14"
