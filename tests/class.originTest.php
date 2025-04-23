@@ -1,37 +1,11 @@
 <?php declare(strict_types=1);
+
+namespace ksfraser\origin\tests;
+
+use ksfraser\origin\origin;
 use PHPUnit\Framework\TestCase;
 
-require_once( dirname( __FILE__ ) .  '/defines.php' );
-require_once( dirname( __FILE__ ) .  '/../class.origin.php' );
-
-
-/*
-final class EmailTest extends TestCase
-{
-    public function testCanBeCreatedFromValidEmailAddress(): void
-    {
-        $this->assertInstanceOf(
-            Email::class,
-            Email::fromString('user@example.com')
-        );
-    }
-
-    public function testCannotBeCreatedFromInvalidEmailAddress(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        Email::fromString('invalid');
-    }
-
-    public function testCanBeUsedAsString(): void
-    {
-        $this->assertEquals(
-            'user@example.com',
-            Email::fromString('user@example.com')
-        );
-    }
-}
-*/
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class originTest extends TestCase
 {

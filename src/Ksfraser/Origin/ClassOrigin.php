@@ -1,7 +1,6 @@
 <?php
 
-namespace ksfraser\origin;
-
+namespace Ksfraser\Origin;
 
 //!< WARNING this class has some FrontAccounting specific code
 
