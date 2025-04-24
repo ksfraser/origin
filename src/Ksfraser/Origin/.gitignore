@@ -1,0 +1,20 @@
+# Ignore Composer vendor directory
+/vendor/
+
+# Ignore PHPUnit test result cache
+.phpunit.result.cache
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore IDE-specific files
+.idea/
+.vscode/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db

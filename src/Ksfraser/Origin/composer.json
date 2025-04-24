@@ -1,0 +1,34 @@
+{
+  "name": "ksfraser/origin",
+  "description": "A base class for common functionality in FrontAccounting modules.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Kevin Fraser",
+      "email": "kevin@ksfraser.ca"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Ksfraser\\Origin\\": "src/Ksfraser/Origin"
+    }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/ksfraser/eventloop"
+    }
+  ],
+  "require": {
+    "monolog/monolog": "^2.0",
+    "psr/log": "^1.0",
+    "ksfraser/eventloop": "dev-main"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0"
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
+}
