@@ -9,34 +9,7 @@ namespace Ksfraser\Origin;
 *****************************************************/
 
 //require_once( 'origin.inc.php' );
-require_once( 'defines.inc.php' );
-//include_once( 'Log.php' );	//PEAR Logging - included in defines.inc
-
-// Define PEAR_LOG constants if not already defined
-if (!defined('PEAR_LOG_EMERG')) {
-    define('PEAR_LOG_EMERG', 0); // System is unusable
-}
-if (!defined('PEAR_LOG_ALERT')) {
-    define('PEAR_LOG_ALERT', 1); // Immediate action required
-}
-if (!defined('PEAR_LOG_CRIT')) {
-    define('PEAR_LOG_CRIT', 2); // Critical conditions
-}
-if (!defined('PEAR_LOG_ERR')) {
-    define('PEAR_LOG_ERR', 3); // Error conditions
-}
-if (!defined('PEAR_LOG_WARNING')) {
-    define('PEAR_LOG_WARNING', 4); // Warning conditions
-}
-if (!defined('PEAR_LOG_NOTICE')) {
-    define('PEAR_LOG_NOTICE', 5); // Normal but significant
-}
-if (!defined('PEAR_LOG_INFO')) {
-    define('PEAR_LOG_INFO', 6); // Informational
-}
-if (!defined('PEAR_LOG_DEBUG')) {
-    define('PEAR_LOG_DEBUG', 7); // Debug-level messages
-}
+require_once 'defines.inc.php'; // Include the defines file for constants
 
 /***************************************************************//**
  * Class origin
@@ -68,15 +41,6 @@ class origin
      */
     protected array $tabs = [];
 
-    /**
-     * @var string|null Help context for screens in FrontAccounting.
-     */
-    public ?string $help_context = null;
-
-    /**
-     * @var string FrontAccounting table prefix (e.g., 0_).
-     */
-    public string $tb_pref = null;
 
     /**
      * @var int Logging level for PEAR_LOG.
@@ -224,7 +188,6 @@ class origin
             $this->handleParam($param_arr);
         }
 
-        $this->fa_specific_init();
         $this->loglevel = $loglevel;
         $this->errors = [];
         $this->log = [];
@@ -307,6 +270,7 @@ class origin
 
         if( !isset( $field )  )
             throw new Exception( "Fields not set", KSF_FIELD_NOT_SET );
+
         try{
                         $this->user_access( KSF_DATA_ACCESS_WRITE );
         } 
@@ -395,24 +359,12 @@ class origin
     * @param none uses globals.  Sets tb_pref
     *
     ********************************************************************************/
+    /**
+     * @throws Exception If fa_specific_init is called directly from Origin.
+     */
     function fa_specific_init()
     {
-        global $db_connections;
-        if( isset( $_SESSION['wa_current_user'] ) )
-        {
-            $cu = $_SESSION['wa_current_user'];                     //FrontAccounting specific
-            $compnum = $cu->company;                                //FrontAccounting specific
-        }
-        else
-        {
-            $compnum = 0;
-            //$this->set( 'company_prefix', $compnum );     //db_base trying to set in test cases.
-        }
-        if( isset( $db_connections[$compnum]['tbpref'] ) )
-            $this->tb_pref = $db_connections[$compnum]['tbpref'];   //FrontAccounting specific
-        else
-            $this->set( 'tb_pref', $compnum . "_", false ); //FrontAccounting specific
-        $this->set( "help_context", "Default HELP" );
+        throw new Exception("fa_specific_init is FrontAccounting-specific. It is in the fa_origin class.  Fix your inheritance.");
     }
     /***************************************************//**
     *
@@ -1102,5 +1054,3 @@ try {
 }
 //var_dump( $test );
 /************!TESTING**********************/
-
-?>
