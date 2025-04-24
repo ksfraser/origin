@@ -2,10 +2,13 @@
 
 namespace Ksfraser\Origin;
 
-//!< WARNING this class has some FrontAccounting specific code
+//!< WARNING this class had some FrontAccounting specific code
+//that has been moved into fa_origin
 
 /****************************************************
 * 20230423 working on making into composer package
+*20250424 now hosted on github as a composer package. 
+*  Can be included in a VCS statement in composer.
 *****************************************************/
 
 //require_once( 'origin.inc.php' );
@@ -252,11 +255,21 @@ class origin
      */
     private function user_access(int $accessLevel)
     {
-        // Placeholder logic for user access check
-        // Replace this with actual access control logic as needed
-        if ($accessLevel !== KSF_DATA_ACCESS_WRITE) {
-            throw new Exception("User does not have the required access level.", KSF_FIELD_NOT_SET);
-        }
+                switch( $accessLevel )
+                {
+                        case KSF_DATA_ACCESS_READ:
+                        case KSF_DATA_ACCESS_WRITE:
+                        case KSF_DATA_ACCESS_READWRITE:
+                        case KSF_MODULE_ACCESS_READ:
+                        case KSF_MODULE_ACCESS_WRITE:
+                        case KSF_MODULE_ACCESS_READWRITE:
+                                break;
+                        case KSF_DATA_ACCESS_DENIED:
+                        case KSF_MODULE_ACCESS_DENIED:
+                        default:
+                                throw new Exception( "User doesn't have access to the field", KSF_DATA_ACCESS_DENIED );
+                }
+                return TRUE;
     }
 
     /**
@@ -699,6 +712,136 @@ class origin
                 $this->name_value_list = $val;
                 return $val;
         }
+	       /**//************************************************************
+        * Find the token matches between arrays.  GOTCHA - Exact Match
+        *
+        *
+        * @param array
+        * @param array
+        * @returns int
+        *****************************************************************/
+        function match_tokens( $arr1, $arr2 )
+        {
+                $result = array_intersect( $arr1, $arr2 );
+                return count( $result );
+        }
+        /**//**********************************************************************
+        * Convert Statement class to this object
+        *
+        * @since 20240228
+        *
+        * @param class
+        * @returns int how many fields did we copy
+        **************************************************************************/
+        function obj2obj( $obj )
+        {
+                //      display_notification( __FILE__ . "::" . __LINE__ . print_r( $obj, true ) );
+                if( is_array( $obj ) )
+                        return $this->arr2obj( $obj );
+                if( ! is_object( $obj ) )
+                        throw new Exception( "Passed in data is neither an array nor an object.  We can't handle here!" );
+
+                $cnt = 0;
+                foreach( get_object_vars($this) as $key => $value )
+                {
+                        //      display_notification( __FILE__ . "::" . __LINE__ . " " . print_r( $key, true ) );
+                        if( isset( $obj->$key ) )
+                        {
+                                //      display_notification( __FILE__ . "::" . __LINE__ . " $key $obj->$key" );
+                                //$this->$key = $obj->$key;
+                                $this->set( $key, $obj->$key );
+                                //      display_notification( __FILE__ . "::" . __LINE__ . " " . print_r( $this->$key, true ) );
+                                $cnt++;
+                        }
+                        else
+                        {
+                                //      display_notification( __FILE__ . "::" . __LINE__ . " $key not set in " . print_r( $obj, true ) );
+                        }
+                }
+                //      display_notification( __FILE__ . "::" . __LINE__ . print_r( $this, true ) );
+                return $cnt;
+        }
+        /**//**********************************************************************
+        * Convert Transaction array to this object
+        *
+        * Using this class's set of variables, we set any that have
+        * a value passed in via the array.  If there are fields in the array that
+        * are not in this object, they are ignored
+        *
+        * @since 20240228
+        *
+        * @param array
+        * @returns int how many fields did we copy
+        **************************************************************************/
+        function arr2obj( $arr )
+        {
+                //      display_notification( __FILE__ . "::" . __LINE__ . print_r( $arr, true ) );
+                if( is_object( $arr ) )
+                        return $this->obj2obj( $arr );
+                if( ! is_array( $arr ) )
+                        throw new Exception( "Passed in data is neither an array nor an object.  We can't handle here!" );
+
+                $cnt = 0;
+                foreach( get_object_vars($this) as $key => $value )
+                {
+                        //      display_notification( __FILE__ . "::" . __LINE__ . " " . print_r( $key, true ) );
+                        if( isset( $arr[$key] ) )
+                        {
+                                //      display_notification( __FILE__ . "::" . __LINE__ . " $key $arr[$key]" );
+                                //$this->$key = $arr[$key];
+                                $this->set( $key, $arr[$key] );
+                                //      display_notification( __FILE__ . "::" . __LINE__ . " " . print_r( $this->$key, true ) );
+                                $cnt++;
+                        }
+                        else
+                        {
+                                //      display_notification( __FILE__ . "::" . __LINE__ . " $key not set in " . print_r( $arr, true ) );
+                        }
+                }
+                //      display_notification( __FILE__ . "::" . __LINE__ . print_r( $this, true ) );
+                return $cnt;
+        }
+        /**//***************************************************
+        * Score a match for a field
+        *
+        * @param string field name
+        * @param mixed value to compare
+        * @returns int score modifier
+        ********************************************************/
+        function score_matches( $field, $value )
+        {
+                if( isset( $this->matchscores[$field] ) )
+                {
+                        if( isset( $this->$field ) )
+                        {
+                                if( $this->$field == $value )
+                                {
+                                        return $this->matchscores[$field];
+                                }
+                        }
+                }
+                return 0;
+        }
+       /**//******************************************************
+        * Check to see if our value is different than passed in
+        *
+        * Driven by bank_import
+        *
+        * @since 20240805
+        *
+        * @param string key
+        * @param mixed value
+        * @return bool is it different
+        **********************************************************/
+        function isdiff( $key, $value )
+        {
+                if( $this->$key !== $value )
+                {
+                        return true;
+                }
+                return false;
+        }
+
     /******SPL EventLoop Funcs ********************************************/
     /****************//**
     *	Ensure we are attached to an eventloop object
