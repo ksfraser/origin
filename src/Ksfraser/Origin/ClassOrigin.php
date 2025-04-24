@@ -284,14 +284,14 @@ class origin
      * Check user access permissions.
      *
      * @param int $accessLevel The required access level.
-     * @throws \Exception If the user does not have the required access level.
+     * @throws Exception If the user does not have the required access level.
      */
     private function user_access(int $accessLevel)
     {
         // Placeholder logic for user access check
         // Replace this with actual access control logic as needed
         if ($accessLevel !== KSF_DATA_ACCESS_WRITE) {
-            throw new \Exception("User does not have the required access level.", KSF_FIELD_NOT_SET);
+            throw new Exception("User does not have the required access level.", KSF_FIELD_NOT_SET);
         }
     }
 
@@ -305,7 +305,7 @@ class origin
         $this->object_var_names(); // Ensure lazy initialization
 
         if( !isset( $field )  )
-            throw new \Exception( "Fields not set", KSF_FIELD_NOT_SET );
+            throw new Exception( "Fields not set", KSF_FIELD_NOT_SET );
         try{
                         $this->user_access( KSF_DATA_ACCESS_WRITE );
         } 
@@ -349,7 +349,7 @@ class origin
      *
      * @param string $field Name of the field to get.
      * @return mixed Value of the field.
-     * @throws \Exception If the field is not set.
+     * @throws Exception If the field is not set.
      */
     function get( $field )
     {
@@ -366,7 +366,7 @@ class origin
      *
      * @param array $param_arr Array of parameters to handle.
      * @return bool True if parameters are handled successfully.
-     * @throws \Exception If the parameter array is invalid.
+     * @throws Exception If the parameter array is invalid.
      */
     function handleParam( $param_arr )
     {
@@ -417,7 +417,7 @@ class origin
     *
     * @since 20200708
     * @param none
-    * @returns none
+    * @return none
     *********************************************************/
     function __destruct()
     {
@@ -447,7 +447,7 @@ class origin
      * @since 20200708
      * @param $prop
      * @return mixed
-     * @throws \Exception If the property does not exist or is not accessible.
+     * @throws Exception If the property does not exist or is not accessible.
      */
     function __get($prop) {
         if (!is_array($this->container_arr)) {
@@ -465,7 +465,7 @@ class origin
             }
         }
 
-        throw new \Exception("Access to property '{$prop}' is not allowed.", KSF_VALUE_NOT_SET);
+        throw new Exception("Access to property '{$prop}' is not allowed.", KSF_VALUE_NOT_SET);
     }
 
     /**
@@ -484,11 +484,11 @@ class origin
      *
      * @since 20200708
      * @return bool
-     * @throws \Exception If the minimum PHP version is not set.
+     * @throws Exception If the minimum PHP version is not set.
      */
     function is_supported_php() {
         if (!isset($this->min_php)) {
-            throw new \Exception("Minimum PHP version is not set.", KSF_FIELD_NOT_SET);
+            throw new Exception("Minimum PHP version is not set.", KSF_FIELD_NOT_SET);
         }
 
         // Ensure PHP version is compared securely
@@ -580,14 +580,14 @@ class origin
      * @since 20200708
      * @param string variable name
      * @param mixed value to set
-     * @returns bool from ->set
+     * @return bool from ->set
      * *****************************************************/
     /*@NULL@*/function set_var( $var, $value )
     {
         //$this->tell_eventloop( $this, "NOTIFY_LOG_DEBUG", get_class( $this ) . "::" . __METHOD__ );
 
         try {
-            $this->set( $var, $value );
+            return $this->set( $var, $value );
         } catch( Exception $e )
         {
         }
@@ -600,14 +600,14 @@ class origin
             $this->$var = $value ;
         }
  */
-        return;
+        return false;
     }
     /**//************************************************************************
     * Getter function.  Return the value of the field.
     *
      * @since 20200708
     * @param string field name to return
-    * @returns mixed value of the field
+    * @return mixed value of the field
     *****************************************************************************/
     function get_var( $var )
     {
@@ -682,7 +682,7 @@ class origin
     * @since 20200708
     * @params string the message to log  
     * @param int Logging Level
-    * @returns null 
+    * @return null 
     ***************************************************************************************************/
     /*@NULL@*/function LogError( $message, $level = PEAR_LOG_ERR )
     {
@@ -696,7 +696,7 @@ class origin
     * @since 20200708
     * @params string| the message to log  
     * @param int Logging Level
-    * @returns null 
+    * @return null 
     ***************************************************************************************************/
    /*@NULL@*/function Log( $message, $level = PEAR_LOG_INFO )
     {
@@ -709,7 +709,7 @@ class origin
     *
     * @params string|array the variable to dump
     * @param int Logging Level
-    * @returns null 
+    * @return null 
     ***************************************************************************************************/
         /*@NULL@*/function var_dump( $var, $level = PEAR_LOG_DEBUG )
         {
@@ -750,7 +750,7 @@ class origin
     /****************//**
     *	Ensure we are attached to an eventloop object
     *
-    * @param create_if_not_exist bool should we create the global if it doesn't exist
+    * @param bool create_if_not_exist bool should we create the global if it doesn't exist
     * @return bool Are we attached
     ********************/
     function attach_eventloop( $create_if_not_exist = true )
@@ -857,8 +857,8 @@ class origin
          *      any other plugin routines that are interested in that
          *      fact.
          *
-         * @param msg what event message to pass
-         * @param method Who triggered that event so that we don't pass back to them into an endless loop
+         * @param string msg what event message to pass
+         * @param string method Who triggered that event so that we don't pass back to them into an endless loop
          * **************************************************************/
         function tell( $msg, $method )
         {
@@ -893,7 +893,7 @@ class origin
          *      Dummy function so that build_interestedin has something to
          *      put in as an example.
          *
-         * @returns FALSE
+         * @return bool FALSE
          * ******************************************************************/
         function dummy( $obj, $msg )
         {
@@ -1008,7 +1008,7 @@ class origin
      */
     public function optimizeLogging()
     {
-        $bufferHandler = new \Monolog\Handler\BufferHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/origin.log', Logger::DEBUG));
+        $bufferHandler = new \Monolog\Handler\BufferHandler(new StreamHandler(__DIR__ . '/origin.log', Logger::DEBUG));
         $this->logger->setHandlers([$bufferHandler]);
     }
     /***************************************************************//**
@@ -1037,7 +1037,7 @@ class origin
 	 * @since 20200712
 	 * @TODO - write Unit Test
 	 * @param Exception object
-	 * @returns null
+	 * @return null
 	 * **************************************************/
 	function error_handler( Exception $e )
 	{
