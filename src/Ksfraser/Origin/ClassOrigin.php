@@ -8,7 +8,8 @@ namespace Ksfraser\Origin;
 * 20230423 working on making into composer package
 *****************************************************/
 
-require_once( 'origin.inc.php' );
+//require_once( 'origin.inc.php' );
+require_once( 'defines.inc.php' );
 //include_once( 'Log.php' );	//PEAR Logging - included in defines.inc
 
 // Define PEAR_LOG constants if not already defined
